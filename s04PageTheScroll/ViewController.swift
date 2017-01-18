@@ -18,6 +18,11 @@ class ViewController: UIViewController {
     // create empty array of images
     var images = [UIImageView]()
     
+    // set # of pages
+    let MAX_PAGE = 2
+    let MIN_PAGE = 0
+    var currentPage = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,6 +35,7 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
+        var contentWidth: CGFloat = 0.0
         let scrollWidth = scrollView.frame.size.width
         
         // putting the images (icon0.png, etc) into the array
@@ -66,6 +72,24 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    @IBAction func swipeGesture(_ sender: UISwipeGestureRecognizer) {
+        if (currentPage < MAX_PAGE && sender.direction == UISwipeGestureRecognizerDirection.left) {
+            moveScrollView(direction: 1)
+            
+        }
+        
+        if (currentPage > MIN_PAGE && sender.direction == UISwipeGestureRecognizerDirection.right) {
+            moveScrollView(direction: -1)
+        }
+        
+    }
+    
+    func moveScrollView(direction: Int){
+        currentPage = currentPage + direction
+        let point: CGPoint = CGPoint(x: scrollView.frame.size.width * CGFloat(currentPage), y: 0.0)
+        scrollView.setContentOffset(point, animated: true)
+        
+    }
+    
 }
 
